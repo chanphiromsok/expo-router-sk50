@@ -1,0 +1,5 @@
+{
+  "eslintConfig": {
+    "extends": ["universe/native", "universe/web"]
+  }
+}
