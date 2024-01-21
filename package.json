@@ -2,16 +2,20 @@
   "name": "ezero",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "build-code-ios": "1",
+  "build-code-android": 1,
+  "package": "com.ezero",
+  "bundleId": "com.ezero",
   "scripts": {
-    "start": "expo start",
     "start:dev": "NODE_ENV=development expo start",
     "start:prod": "NODE_ENV=production expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "prebuild:dev": "yes | expo prebuild --no-install --clean",
-    "prebuild:prod": "yes | expo prebuild --no-install --clean"
+    "prebuild:dev": "NODE_ENV=development expo prebuild --no-install --clean",
+    "prebuild:prod": "NODE_ENV=production expo prebuild --no-install --clean",
+    "postinstall": "node ./env.js;"
   },
   "jest": {
     "preset": "jest-expo"
@@ -24,6 +28,7 @@
     "@shopify/flash-list": "^1.6.3",
     "@tamagui/config": "^1.86.6",
     "@tanstack/react-query": "^5.17.19",
+    "axios": "^1.6.5",
     "expo": "~50.0.2",
     "expo-dev-client": "^3.3.6",
     "expo-font": "~11.10.2",

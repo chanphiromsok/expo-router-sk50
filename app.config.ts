@@ -1,8 +1,9 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
+import { Env } from "./env";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "EZero",
+  name: Env.NAME,
   slug: "EZero",
   version: "1.0.0",
   orientation: "portrait",
@@ -18,7 +19,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: true,
-    bundleIdentifier: "com.ezero",
+    bundleIdentifier: Env.BUNDLE_ID,
     config: {
       usesNonExemptEncryption: false,
     },
@@ -28,7 +29,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       foregroundImage: "./assets/images/adaptive-icon.png",
       backgroundColor: "#ffffff",
     },
-    package: "com.ezero",
+    package: Env.PACKAGE,
   },
   web: {
     bundler: "metro",
@@ -42,6 +43,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         asyncRoutes: {
           web: true,
           default: "development",
+          android: false,
+          ios: false,
         },
       },
     ],
