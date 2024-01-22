@@ -1,17 +1,14 @@
 const z = require("zod");
 const packageJSON = require("./package.json");
-const APP_ENV = process.env.APP_ENV;
-if (!APP_ENV) {
-  console.info("Skip NODE_ENV is not set");
-  return;
-}
-if (APP_ENV !== "production" && APP_ENV !== "development") {
-  console.info(
-    "Skip NODE_ENV is not valid value must be production | development | test"
-  );
-  return;
-}
-const NAME = packageJSON.name; // app name
+const path = require('path');
+const APP_ENV = process.env.APP_ENV ?? "development";
+const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
+require('dotenv').config({
+  path: envPath,
+});
+
+
+const NAME = packageJSON.displayName; // app displayName
 const VERSION = packageJSON.version; // app version
 const BUILD_CODE_IOS = packageJSON["build-code-ios"];
 const BUILD_CODE_ANDROID = packageJSON["build-code-android"];
@@ -22,6 +19,9 @@ const withEnvSuffix = (name) => {
   return APP_ENV === "production" ? name : `${name}.${APP_ENV}`;
 };
 
+/**
+ * @type {Record<keyof z.infer<typeof client> , string | undefined>}
+ */
 const client = z.object({
   APP_ENV: z.enum(["development", "production"]),
   NAME: z.string(),
@@ -37,6 +37,9 @@ const client = z.object({
     .positive("BUILD_CODE_ANDROID must be a positive integer"),
 });
 
+/**
+ * @type {Record<keyof z.infer<typeof buildTime> , string | undefined>}
+ */
 const buildTime = z.object({
   // ADD YOUR BUILD TIME ENV VARS HERE
   PHX_SOCKET_URL: z.string(),
@@ -46,7 +49,7 @@ const buildTime = z.object({
 // refer to client for manage version only
 const _clientEnv = {
   APP_ENV: APP_ENV,
-  NAME: NAME,
+  NAME: NAME.toString(),
   BUNDLE_ID: withEnvSuffix(BUNDLE_ID),
   PACKAGE: withEnvSuffix(PACKAGE),
   VERSION: VERSION,
